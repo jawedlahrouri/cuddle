@@ -31,22 +31,3 @@ int df_write_csv(dataframe_t *dataframe ,const char *filename)
     fclose(file);
     return 0;
 }
-
-#include "my.h"
-#include "dataframe.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "my.h"
-#include "dataframe.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-void print_column_types(column_type_t *column_types, int nb_columns)
-{
-    printf("Types des colonnes :\n");
-    for (int i = 0; i < nb_columns; i++) {
-        printf("Colonne %d : %u\n", i, column_types[i]);
-    }
-    printf("\n");
-}
