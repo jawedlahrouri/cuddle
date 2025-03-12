@@ -99,7 +99,7 @@ column_type_t *define_type(int nb_row, int nb_columns, char ***arg)
 column_type_t *set_to_undefined(int nb_row, int nb_columns)
 {
     column_type_t *type = malloc(sizeof(column_type_t) * nb_row);
-    
+
     for (int i = 0; i < nb_columns; i++) {
         type[i] = UNDEFINED;
     }
@@ -109,23 +109,19 @@ column_type_t *set_to_undefined(int nb_row, int nb_columns)
 dataframe_t *df_read_csv(char *filename, char *separator)
 {
     dataframe_t *data_frame = malloc(sizeof(dataframe_t));
-    if (!data_frame)
-        return NULL;
     FILE *file = fopen(filename, "r");
-    if (!file)
-        return NULL;
     char line[1024];
     int nb_row = 0;
     int nb_columns = 0;
     char **name;
     void ***data = malloc(sizeof(void **) * 100);
 
-    if (!data)
+    if (!file || !data_frame || !data)
         return NULL;
     if (fgets(line, sizeof(line), file)) {
         line[strcspn(line, "\n")] = '\0';
         name = my_str_to_word_array(line, separator);
-        while (name[nb_columns]) 
+        while (name[nb_columns])
             nb_columns++;
     }
     while (fgets(line, sizeof(line), file)) {

@@ -9,7 +9,7 @@
 #include "dataframe.h"
 #include <stdio.h>
 
-int df_write_csv(dataframe_t *dataframe ,const char *filename)
+int df_write_csv(dataframe_t *dataframe, const char *filename)
 {
     FILE *file = fopen(filename, "w");
     char **line = NULL;

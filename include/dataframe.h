@@ -5,8 +5,8 @@
 ** dataframe
 */
 
-#ifndef dataframe_h
-    #define dataframe_h
+#ifndef DATAFRAME_H
+    #define DATAFRAME_H
 
 typedef enum {
     BOOL,
