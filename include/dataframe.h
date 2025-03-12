@@ -23,6 +23,7 @@ typedef struct {
     char **column_names; // Array of column names
     column_type_t *column_types; // Array of column types
     void ***data; // 2D array of data values
+    char *separator;
 } dataframe_t;
 
 #endif
