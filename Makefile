@@ -7,9 +7,9 @@
 
 NAME 	= 	cuddle
 
-SRC 	= 	df_read_csv.c \
-			df_write_csv.c \
-			my_str_to_word_array.c \
+SRC 	= 	./src/df_read_csv.c \
+			./src/df_write_csv.c \
+			./src/my_str_to_word_array.c \
 
 OBJ = $(SRC:.c=.o)
 
