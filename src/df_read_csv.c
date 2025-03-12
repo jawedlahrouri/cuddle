@@ -138,6 +138,7 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     data_frame->column_types = define_type(nb_row, nb_columns, (char ***)data);
     data_frame->nb_columns = nb_columns;
     data_frame->nb_rows = nb_row;
+    data_frame->separator = separator;
     fclose(file);
     return data_frame;
 }
