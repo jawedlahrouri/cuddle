@@ -12,6 +12,6 @@ typedef struct word_array_s {
     char const *str;
 } word_array_t;
 
-char **my_str_to_word_array(char const *str, char specifie);
+char **my_str_to_word_array(char const *str, char *separators);
 
 #endif

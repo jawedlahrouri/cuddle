@@ -10,29 +10,31 @@
 #include <stdio.h>
 #include "my.h"
 
-static int alphanum(char c, char specifie)
+static int is_separator(char c, char *separators)
 {
-    if (c == specifie)
-        return 0;
-    return 1;
+    for (int i = 0; separators[i] != '\0'; i++) {
+        if (c == separators[i])
+            return 1;
+    }
+    return 0;
 }
 
-static int nb_of_words(char const *str, char specifie)
+static int nb_of_words(char const *str, char *separators)
 {
     int count = 0;
 
     for (int i = 0; str[i] != '\0'; i++)
-        if (alphanum(str[i], specifie) == 1 && (i == 0 ||
-            alphanum(str[i - 1], specifie) == 0))
+        if (!is_separator(str[i], separators) && (i == 0 ||
+            is_separator(str[i - 1], separators)))
             count++;
     return count + 1;
 }
 
-static int len_next_word(char const *str, int i, char specifie)
+static int len_next_word(char const *str, int i, char *separators)
 {
     int count = 0;
 
-    while (str[i] != '\0' && alphanum(str[i], specifie) == 1) {
+    while (str[i] != '\0' && !is_separator(str[i], separators)) {
         i++;
         count++;
     }
@@ -50,20 +52,20 @@ static char **free_array(char **array, int size)
     return NULL;
 }
 
-int word_array(word_array_t *value, char specifie, int *i, int a)
+int word_array(word_array_t *value, char *separators, int *i, int a)
 {
     static int j = 0;
 
-    if (alphanum(value->str[a], specifie) == 1 && (a == 0 ||
-        alphanum(value->str[a - 1], specifie) == 0)) {
+    if (!is_separator(value->str[a], separators) && (a == 0 ||
+        is_separator(value->str[a - 1], separators))) {
         (*i)++;
         j = 0;
         value->array[*i] = malloc(sizeof(char) *
-            len_next_word(value->str, a, specifie));
+            len_next_word(value->str, a, separators));
         if (!value->array[*i])
             return 0;
     }
-    if (alphanum(value->str[a], specifie) == 1) {
+    if (!is_separator(value->str[a], separators)) {
         value->array[*i][j] = value->str[a];
         j++;
         value->array[*i][j] = '\0';
@@ -71,10 +73,10 @@ int word_array(word_array_t *value, char specifie, int *i, int a)
     return 1;
 }
 
-char **my_str_to_word_array(char const *str, char specifie)
+char **my_str_to_word_array(char const *str, char *separators)
 {
     int i = -1;
-    int word_count = nb_of_words(str, specifie);
+    int word_count = nb_of_words(str, separators);
     word_array_t value;
 
     value.str = str;
@@ -82,7 +84,7 @@ char **my_str_to_word_array(char const *str, char specifie)
     if (!value.array)
         return NULL;
     for (int a = 0; value.str[a] != '\0'; a++) {
-        if (!word_array(&value, specifie, &i, a)) {
+        if (!word_array(&value, separators, &i, a)) {
             return free_array(value.array, i + 1);
         }
     }
