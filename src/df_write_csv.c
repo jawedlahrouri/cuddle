@@ -9,26 +9,39 @@
 #include "dataframe.h"
 #include <stdio.h>
 
-int df_write_csv(dataframe_t *dataframe, const char *filename)
+void write_csv_header(FILE *file, dataframe_t *df)
 {
-    FILE *file = fopen(filename, "w");
-    char **line = NULL;
-    char *sep = dataframe->separator;
-    char **columns = dataframe->column_names;
+    char *sep = df->separator;
+    int n = df->nb_columns - 1;
 
-    if (file == NULL)
-        return 84;
-    for (int i = 0; columns[i] != NULL; i++)
-        fprintf(file, "%s%s", columns[i], (columns[i + 1] != NULL) ? sep : "");
+    for (int i = 0; i < df->nb_columns; i++)
+        fprintf(file, "%s%s", df->column_names[i], (i < n) ? sep : "");
     fprintf(file, "\n");
-    for (int i = 0; i < dataframe->nb_rows; i++) {
-        line = (char **)dataframe->data[i];
+}
+
+void write_csv_rows(FILE *file, dataframe_t *df)
+{
+    char **line = NULL;
+    char *sep = df->separator;
+
+    for (int i = 0; i < df->nb_rows; i++) {
+        line = (char **)df->data[i];
         if (line == NULL)
             break;
         for (int j = 0; line[j] != NULL; j++)
             fprintf(file, "%s%s", line[j], (line[j + 1] != NULL) ? sep : "");
         fprintf(file, "\n");
     }
+}
+
+int df_write_csv(dataframe_t *df, const char *filename)
+{
+    FILE *file = fopen(filename, "w");
+
+    if (file == NULL)
+        return 84;
+    write_csv_header(file, df);
+    write_csv_rows(file, df);
     fclose(file);
     return 0;
 }
