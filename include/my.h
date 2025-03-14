@@ -14,6 +14,9 @@ typedef struct word_array_s {
     char const *str;
 } word_array_t;
 
+void df_free(dataframe_t *data);
+dataframe_t *df_tail(dataframe_t *df, int nb_rows);
+dataframe_t *df_head(dataframe_t *df, int nb_rows);
 char **my_str_to_word_array(char const *str, char *separators);
 dataframe_t *df_read_csv(char *filename, char *separator);
 int df_write_csv(dataframe_t *dataframe, const char *filename);

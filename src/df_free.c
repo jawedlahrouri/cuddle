@@ -8,6 +8,7 @@
 #include "dataframe.h"
 #include "my.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void df_free(dataframe_t *data)
 {
