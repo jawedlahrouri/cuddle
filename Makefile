@@ -11,7 +11,7 @@ SRC 	= 	./src/df_read_csv.c \
 			./src/df_write_csv.c \
 			./src/df_info.c \
 			./src/my_str_to_word_array.c \
-
+			./src/read_bis.c \
 
 OBJ = $(SRC:.c=.o)
 

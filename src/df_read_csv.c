@@ -13,55 +13,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-static int is_negative(char *str)
-{
-    return str[0] == '-';
-}
-
-static int is_valid_digit(char c)
-{
-    return (c >= '0' && c <= '9') || c == '.';
-}
-
-int count_points(char *str)
-{
-    int point = 0;
-
-    for (int a = 0; str[a]; a++) {
-        if (str[a] == '.')
-            point++;
-    }
-    return point;
-}
-
-static int next(char ***arg, int i, int j, int *is_float)
-{
-    for (int a = 0; arg[j][i][a]; a++) {
-        if (!is_valid_digit(arg[j][i][a]))
-            return 0;
-        if (arg[j][i][a] == '.')
-            *is_float = 1;
-    }
-    return 1;
-}
-
-int is_num(char ***arg, int nb_row, int i)
-{
-    int is_float = 0;
-
-    for (int j = 0; j < nb_row; j++) {
-        if (is_negative(arg[j][i]))
-            return 2;
-        int point = count_points(arg[j][i]);
-        if (point > 1)
-            return 84;
-        if (next(arg, i, j, &is_float) == 0)
-            return 0;
-    }
-    return is_float ? 3 : 1;
-}
-
-int is_it_bool(char ***arg, int nb_row, int i)
+static int is_it_bool(char ***arg, int nb_row, int i)
 {
     int my_bool = 0;
 
@@ -72,39 +24,78 @@ int is_it_bool(char ***arg, int nb_row, int i)
     return my_bool == nb_row ? 1 : 0;
 }
 
-int check_type(char ***arg, int i, int nb_row)
+static value_type_t *get_type(value_type_t *istype, int num)
 {
-    int is_bool = 0;
-    int is_string = 0;
-    int is_int = 0;
-    int is_float = 0;
-    int is_uint = 0;
-    int num = 0;
+    if (num == 1)
+        istype->is_int++;
+    if (num == 3)
+        istype->is_float++;
+    if (num == 0)
+        istype->is_string++;
+    if (num == 2)
+        istype->is_uint++;
+    return istype;
+}
 
+static int return_value(value_type_t *istype, int nb_row)
+{
+    if (istype->is_string > 0)
+        return 5;
+    if (istype->is_int == nb_row)
+        return 2;
+    if (istype->is_uint == nb_row)
+        return 3;
+    if (istype->is_float == nb_row)
+        return 4;
+    if (istype->is_bool == nb_row)
+        return 1;
+    return 0;
+}
+
+static int check_type(char ***arg, int i, int nb_row)
+{
+    int num = 0;
+    value_type_t *istype = malloc(sizeof(value_type_t));
+
+    if (!istype)
+        return 0;
+    istype->is_bool = 0;
+    istype->is_string = 0;
+    istype->is_int = 0;
+    istype->is_float = 0;
+    istype->is_uint = 0;
     for (int j = 0; j < nb_row; j++) {
         num = is_num(arg, nb_row, i);
         if (is_it_bool(arg, nb_row, i) == 1)
-            is_bool++;
-        else if (num == 1)
-            is_int++;
-        else if (num == 3)
-            is_float++;
-        else if (num == 0)
-            is_string++;
-        else if (num == 2)
-            is_uint++;
+            istype->is_bool++;
+        else
+            istype = get_type(istype, num);
     }
-    if (is_string > 0)
-        return 5;
-    if (is_int == nb_row)
-        return 2;
-    if (is_uint == nb_row)
-        return 3;
-    if (is_float == nb_row)
-        return 4;
-    if (is_bool == nb_row)
-        return 1;
-    return 0;
+    return return_value(istype, nb_row);
+}
+
+static void attribute_type(column_type_t *type, int i, int type_x)
+{
+    switch (type_x) {
+        case 1:
+            type[i] = BOOL;
+            break;
+        case 2:
+            type[i] = INT;
+            break;
+        case 3:
+            type[i] = UINT;
+            break;
+        case 4:
+            type[i] = FLOAT;
+            break;
+        case 5:
+            type[i] = STRING;
+            break;
+        default:
+            type[i] = UNDEFINED;
+            break;
+    }
 }
 
 column_type_t *define_type(int nb_row, int nb_columns, char ***arg)
@@ -114,26 +105,7 @@ column_type_t *define_type(int nb_row, int nb_columns, char ***arg)
 
     for (int i = 0; i < nb_columns; i++) {
         type_x = check_type(arg, i, nb_row);
-        switch (type_x) {
-            case 1:
-                type[i] = BOOL;
-                break;
-            case 2:
-                type[i] = INT;
-                break;
-            case 3:
-                type[i] = UINT;
-                break;
-            case 4:
-                type[i] = FLOAT;
-                break;
-            case 5:
-                type[i] = STRING;
-                break;
-            default:
-                type[i] = UNDEFINED;
-                break;
-        }
+        attribute_type(type, i, type_x);
     }
     return type;
 }
@@ -179,7 +151,8 @@ dataframe_t *df_read_csv(char *filename, char *separator)
 {
     dataframe_t *data_frame = malloc(sizeof(dataframe_t));
     FILE *file = fopen(filename, "r");
-    int nb_row = 0, nb_columns = 0;
+    int nb_row = 0;
+    int nb_columns = 0;
     char **name;
     void ***data;
 
