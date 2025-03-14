@@ -156,6 +156,8 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     char **name;
     void ***data;
 
+    if (!separator)
+        separator = ",";
     if (!file || !data_frame)
         return NULL;
     name = read_column_names(file, separator, &nb_columns);
