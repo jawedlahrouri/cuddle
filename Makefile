@@ -5,22 +5,29 @@
 ## gcc lookalike
 ##
 
-NAME 	= 	cuddle
+NAME 	= 	libcuddle.a
 
 SRC 	= 	./src/df_read_csv.c \
 			./src/df_write_csv.c \
 			./src/df_info.c \
 			./src/my_str_to_word_array.c \
 			./src/read_bis.c \
+			./src/df_shape.c
 
-OBJ = $(SRC:.c=.o)
+OBJ 	= 	$(SRC:.c=.o)
 
-CFLAGS	=	-Wall -Wextra -I include
+CFLAGS 	= 	-Wall -Wextra -I include
+
+AR 		= 	ar rcs
+CC 		= 	gcc
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
-	gcc $(OBJ) -o $(NAME) $(CFLAGS)
+$(NAME): $(OBJ)
+	$(AR) $(NAME) $(OBJ)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)

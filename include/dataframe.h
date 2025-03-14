@@ -34,4 +34,9 @@ typedef struct dataframe_s {
     char *separator;
 } dataframe_t;
 
+typedef struct dataframe_shape_s {
+    int nb_rows;
+    int nb_columns;
+} dataframe_shape_t;
+
 #endif

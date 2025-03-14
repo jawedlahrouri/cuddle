@@ -23,5 +23,6 @@ int check_error(char ***arg, int i, int j, int *is_float);
 int count_points(char *str);
 int is_valid_digit(char c);
 int is_negative(char *str);
+dataframe_shape_t df_shape(dataframe_t *dataframe);
 
 #endif
