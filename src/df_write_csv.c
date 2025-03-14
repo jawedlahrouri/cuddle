@@ -14,12 +14,11 @@ int df_write_csv(dataframe_t *dataframe, const char *filename)
     FILE *file = fopen(filename, "w");
     char **line = NULL;
     char *sep = dataframe->separator;
-    char **columns = dataframe->column_names;
 
     if (file == NULL)
         return 84;
-    for (int i = 0; columns[i] != NULL; i++)
-        fprintf(file, "%s%s", columns[i], (columns[i + 1] != NULL) ? sep : "");
+    for (int i = 0; i < dataframe->nb_columns; i++)
+        fprintf(file, "%s%s", dataframe->column_names[i], (i < dataframe->nb_columns - 1) ? sep : "");
     fprintf(file, "\n");
     for (int i = 0; i < dataframe->nb_rows; i++) {
         line = (char **)dataframe->data[i];
