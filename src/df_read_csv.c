@@ -110,9 +110,9 @@ column_type_t *define_type(int nb_row, int nb_columns, char ***arg)
     return type;
 }
 
-column_type_t *set_to_undefined(int nb_row, int nb_columns)
+column_type_t *set_to_undefined(int nb_columns)
 {
-    column_type_t *type = malloc(sizeof(column_type_t) * nb_row);
+    column_type_t *type = malloc(sizeof(column_type_t) * (nb_columns + 1));
 
     for (int i = 0; i < nb_columns; i++) {
         type[i] = UNDEFINED;
@@ -156,8 +156,7 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     char **name;
     void ***data;
 
-    if (!separator)
-        separator = ",";
+    separator = separator ? separator : ",";
     if (!file || !data_frame)
         return NULL;
     name = read_column_names(file, separator, &nb_columns);
@@ -167,7 +166,7 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     data_frame->column_types = define_type(nb_row, nb_columns, (char ***)data);
     data_frame->nb_columns = nb_columns;
     data_frame->nb_rows = nb_row;
-    data_frame->separator = separator;
+    data_frame->separator = strdup(separator);
     fclose(file);
     return data_frame;
 }

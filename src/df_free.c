@@ -11,7 +11,7 @@
 
 void df_free(dataframe_t *data)
 {
-    if (!data) 
+    if (!data)
         return;
     for (int i = 0; i < data->nb_columns; i++)
         free(data->column_names[i]);

@@ -11,25 +11,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int copy_column_info(dataframe_t *head, dataframe_t *df)
+static int copy_column_info(dataframe_t *h, dataframe_t *df)
 {
-    head->column_names = malloc(sizeof(char *) * (head->nb_columns + 1));
-    head->column_types = malloc(sizeof(column_type_t) * (head->nb_columns + 1));
-    if (!head->column_names || !head->column_types)
+    h->column_names = malloc(sizeof(char *) * (h->nb_columns + 1));
+    h->column_types = malloc(sizeof(column_type_t) * (h->nb_columns + 1));
+    if (!h->column_names || !h->column_types)
         return 84;
-    for (int i = 0; i < head->nb_columns; i++) {
-        head->column_names[i] = strdup(df->column_names[i]);
-        head->column_types[i] = df->column_types[i];
+    for (int i = 0; i < h->nb_columns; i++) {
+        h->column_names[i] = strdup(df->column_names[i]);
+        h->column_types[i] = df->column_types[i];
     }
     return (0);
 }
 
 static int copy_rows(dataframe_t *head, dataframe_t *df, int col, int nb)
 {
-    printf("%d\n", nb);
     for (int j = 0; j < nb; j++) {
-        printf("%s\n", df->data[col][j]);
-        printf("hbsbdbf\n");
         if (df->column_types[col] == STRING)
             head->data[col][j] = strdup((char *)df->data[col][j]);
         else
@@ -37,7 +34,6 @@ static int copy_rows(dataframe_t *head, dataframe_t *df, int col, int nb)
         if (!head->data[col][j])
             return (84);
     }
-    printf("fjf\n");
     return (0);
 }
 
