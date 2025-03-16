@@ -5,9 +5,10 @@
 ## gcc lookalike
 ##
 
-NAME 	= 	libcuddle.a
+NAME		=	libcuddle.a
+EXECUTABLE	=	cuddle
 
-SRC 	= 	./src/df_read_csv.c \
+SRC		=	./src/df_read_csv.c \
 			./src/df_write_csv.c \
 			./src/df_info.c \
 			./src/df_head.c \
@@ -19,25 +20,25 @@ SRC 	= 	./src/df_read_csv.c \
 			./src/df_get_value.c \
 			./lib/my/my_copy_word_in_array.c \
 
-OBJ 	= 	$(SRC:.c=.o)
+OBJ		=	$(SRC:.c=.o)
 
-CFLAGS 	= 	-Wall -Wextra -I include
+CFLAGS		=	-Wall -Wextra -I include
 
-AR 		= 	ar rcs
-CC 		= 	gcc
+AR		=	ar rcs
+CC		=	gcc
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(AR) $(NAME) $(OBJ)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+debug:
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(SRC)
 
 clean:
 	rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(EXECUTABLE)
 
 re: fclean all

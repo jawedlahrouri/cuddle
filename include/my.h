@@ -7,6 +7,11 @@
 #ifndef MY_H
     #define MY_H
 
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <string.h>
+    #include <stdbool.h>
     #include "dataframe.h"
 
 typedef struct word_array_s {
