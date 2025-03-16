@@ -22,15 +22,18 @@ void write_csv_header(FILE *file, dataframe_t *df)
 void write_csv_rows(FILE *file, dataframe_t *df)
 {
     char **line = NULL;
+    char **next = NULL;
     char *sep = df->separator;
 
     for (int i = 0; i < df->nb_rows; i++) {
         line = (char **)df->data[i];
-        if (line == NULL)
-            break;
+        if (!line)
+            continue;
         for (int j = 0; line[j] != NULL; j++)
             fprintf(file, "%s%s", line[j], (line[j + 1] != NULL) ? sep : "");
-        fprintf(file, "\n");
+        next = (char **)df->data[i + 1];
+        if (next != NULL && i < df->nb_rows - 1)
+            fprintf(file, "\n");
     }
 }
 

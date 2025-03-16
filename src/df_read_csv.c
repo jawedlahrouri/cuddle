@@ -157,6 +157,7 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     void ***data;
 
     separator = separator ? separator : ",";
+    data_frame->separator = strdup(separator);
     if (!file || !data_frame)
         return NULL;
     name = read_column_names(file, separator, &nb_columns);
@@ -166,7 +167,6 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     data_frame->column_types = define_type(nb_row, nb_columns, (char ***)data);
     data_frame->nb_columns = nb_columns;
     data_frame->nb_rows = nb_row;
-    data_frame->separator = strdup(separator);
     fclose(file);
     return data_frame;
 }
