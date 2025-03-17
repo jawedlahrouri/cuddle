@@ -32,5 +32,9 @@ int count_points(char *str);
 int is_valid_digit(char c);
 int is_negative(char *str);
 dataframe_shape_t df_shape(dataframe_t *dataframe);
+void *df_get_value(dataframe_t *dataframe, int row, const char *column);
+void **df_get_values(dataframe_t *dataframe, const char *column);
+void **df_get_unique_values(dataframe_t *dataframe, const char *column);
+
 
 #endif
