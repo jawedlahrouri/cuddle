@@ -33,7 +33,6 @@ void write_csv_rows(FILE *file, dataframe_t *df)
     }
 }
 
-
 int df_write_csv(dataframe_t *df, const char *filename)
 {
     FILE *file = fopen(filename, "w");
