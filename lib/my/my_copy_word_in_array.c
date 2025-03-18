@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "dataframe.h"
 
 char **my_copy_word_in_array(char **tab)
 {

@@ -5,7 +5,6 @@
 ** df_write_csv
 */
 
-#include "my.h"
 #include "dataframe.h"
 #include <stdio.h>
 

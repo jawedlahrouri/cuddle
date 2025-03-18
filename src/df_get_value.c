@@ -5,7 +5,6 @@
 ** get_value
 */
 
-#include "my.h"
 #include "dataframe.h"
 #include <stdio.h>
 #include <string.h>
