@@ -55,6 +55,8 @@ dataframe_t *df_head(dataframe_t *df, int nb_rows)
 {
     dataframe_t *head;
 
+    if (nb_rows > df->nb_rows)
+        return df;
     if (!df || nb_rows <= 0)
         return (NULL);
     if (nb_rows > df->nb_rows)
