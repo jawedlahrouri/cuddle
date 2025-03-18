@@ -58,6 +58,8 @@ dataframe_t *df_tail(dataframe_t *df, int nb_rows)
     dataframe_t *tail;
     int start_index;
 
+    if (nb_rows > df->nb_rows)
+        return df;
     if (!df || nb_rows <= 0)
         return (NULL);
     if (nb_rows > df->nb_rows)
