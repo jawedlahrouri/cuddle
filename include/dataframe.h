@@ -69,5 +69,7 @@ void *df_get_value(dataframe_t *dataframe, int row, const char *column);
 void **df_get_values(dataframe_t *dataframe, const char *column);
 void **df_get_unique_values(dataframe_t *dataframe, const char *column);
 void df_describe(dataframe_t *dataframe);
+dataframe_t *df_apply(dataframe_t *dataframe,
+    const char *column, void *(*apply_func)(void *value));
 
 #endif
