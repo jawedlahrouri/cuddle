@@ -19,7 +19,7 @@ SRC		=	./src/df_read_csv.c \
 			./src/df_shape.c \
 			./src/df_get_value.c \
 			./lib/my/my_copy_word_in_array.c \
-			./src/df_describe.c \
+			./main.c
 
 OBJ		=	$(SRC:.c=.o)
 
