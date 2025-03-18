@@ -5,15 +5,6 @@
 ** df_filter
 */
 
-#include "my.h"
-
-/*
-** EPITECH PROJECT, 2025
-** cuddle
-** File description:
-** df_filter
-*/
-
 #include "dataframe.h"
 #include <stdlib.h>
 #include <string.h>
