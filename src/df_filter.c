@@ -81,3 +81,10 @@ bool filter_func(void *value)
 {
     return (*(int *)value > 30);
 }
+
+int main ( void ) {
+    dataframe_t *dataframe = df_read_csv("data.csv", NULL);
+    dataframe_t *filtered = df_filter ( dataframe , "age ", filter_func);
+    df_write_csv ( filtered , " filtered.csv") ;
+    return 0;
+}
