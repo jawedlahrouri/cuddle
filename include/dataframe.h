@@ -8,13 +8,13 @@
 #ifndef DATAFRAME_H
     #define DATAFRAME_H
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdbool.h>
+    #include <stddef.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <string.h>
+    #include <stdbool.h>
 
 typedef enum {
     BOOL,
@@ -49,8 +49,8 @@ typedef struct dataframe_shape_s {
 
 
 typedef struct word_array_s {
-char **array;
-char const *str;
+    char **array;
+    char const *str;
 } word_array_t;
 
 void df_free(dataframe_t *data);
