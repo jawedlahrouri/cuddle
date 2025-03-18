@@ -6,9 +6,6 @@
 */
 
 #include "dataframe.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 
 static int get_column_index(dataframe_t *df, const char *column)
 {
@@ -31,7 +28,8 @@ static int count_matching_rows(dataframe_t *df, int col_idx,
     return count;
 }
 
-static void copy_row(dataframe_t *new_df, dataframe_t *df, int new_row, int old_row)
+static void copy_row(dataframe_t *new_df, dataframe_t *df,
+    int new_row, int old_row)
 {
     for (int j = 0; j < df->nb_columns; j++) {
         if (df->column_types[j] == STRING)
