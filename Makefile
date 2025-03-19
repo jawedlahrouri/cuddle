@@ -39,53 +39,18 @@ DEBUGFLAGS	=	-g
 AR		=	ar rcs
 CC		=	gcc
 
-all: ascii_art $(NAME) ascii_mimiki
+all: $(NAME)
 
 $(NAME): $(OBJ)
-	@echo "$(YELLOW)🔨 Compilation en cours...$(RESET)"
 	$(AR) $(NAME) $(OBJ)
-	@echo "$(GREEN)✔ $(NAME) a été créé !$(RESET)"
 
 debug:
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(EXECUTABLE) $(SRC)
 
 clean:
-	@echo "$(RED)🧹 Suppression des fichiers objets...$(RESET)"
 	rm -f $(OBJ)
 
 fclean: clean
-	@echo "$(RED)🗑 Suppression de $(NAME) et $(EXECUTABLE)...$(RESET)"
 	rm -f $(NAME) $(EXECUTABLE)
 
 re: fclean all
-
-ascii_art:
-	clear
-	@echo "$(BOLD)$(RED)"
-	@echo " ██████╗██╗   ██╗██████╗ ██████╗ ██╗     ███████╗"
-	@echo "██╔════╝██║   ██║██╔══██╗██╔══██╗██║     ██╔════╝"
-	@echo "██║     ██║   ██║██║  ██║██║  ██║██║     █████╗  "
-	@echo "██║     ██║   ██║██║  ██║██║  ██║██║     ██╔══╝  "
-	@echo "╚██████╗╚██████╔╝██████╔╝██████╔╝███████╗███████╗"
-	@echo " ╚═════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝"
-	@echo "      $(YELLOW)🚀 CUDDLE - EPITECH PROJECT 2025 🚀$(RESET)"
-	@echo "$(RESET)"
-
-ascii_mimiki:
-	@echo "$(GREEN)Compilation terminée avec succès ! ✅ $(RESET)"
-	@echo "$(BOLD)"
-	@echo " ⠀⠀⣠⡶⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo " ⠀⣰⣿⠃⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀"
-	@echo " ⢸⣿⣯⠀⠀⠀⠀⠀⠀⢠⣴⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀"
-	@echo " ⢼⣿⣿⣆⠀⢀⣀⣀⣴⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo " ⢸⣿⣿⣿⣿⣿⣿⣿⠿⠿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo " ⠀⢻⣿⠋⠙⢿⣿⣿⡀⠀⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo " ⠀⢸⠿⢆⣀⣼⣿⣿⣿⣿⡏⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo " ⠀⠀⡀⣨⡙⠟⣩⣙⣡⣬⣴⣤⠏⠀⠀⠀⠀⠀⠀⣀⡀"
-	@echo " ⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⣀⣤⣾⣿⣿⡇"
-	@echo " ⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣇⠀⢸⣿⣿⠿⠿⠛⠃"
-	@echo " ⠀⠀⠀⠀⢠⣿⣿⢹⣿⢹⣿⣿⣿⢰⣿⠿⠃⠀⠀⠀⠀"
-	@echo " ⠀⢀⣀⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡛⠀⠀⠀⠀⠀⠀"
-	@echo " ⠀⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠛⠓⠀⠀⠀⠀⠀"
-	@echo " ⠀⠀⠀⠀⠀⠀⠀⠉⠀⠉⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo "$(RESET)"
