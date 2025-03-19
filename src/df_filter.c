@@ -10,8 +10,11 @@
 static int get_column_index(dataframe_t *df, const char *column)
 {
     for (int i = 0; i < df->nb_columns; i++) {
-        if (strcmp(df->column_names[i], column) == 0)
+        printf("%s index: %d\n", df->column_names[i], i);
+        if (strcmp(df->column_names[i], column) == 0) {
+            printf("%s index: %d\n", df->column_names[i], i);
             return i;
+        }
     }
     return -1;
 }
@@ -21,8 +24,9 @@ static int count_matching_rows(dataframe_t *df, int col_idx,
 {
     int count = 0;
 
+    printf("rows: %d, col: %d,\n", df->nb_columns, col_idx);
     for (int i = 0; i < df->nb_rows; i++) {
-        if (filter_func(df->data[col_idx][i]))
+        if (filter_func(df->data[i][col_idx]) == 1)
             count++;
     }
     return count;
@@ -32,10 +36,10 @@ static void copy_row(dataframe_t *new_df, dataframe_t *df,
     int new_row, int old_row)
 {
     for (int j = 0; j < df->nb_columns; j++) {
-        if (df->column_types[j] == STRING)
-            new_df->data[j][new_row] = strdup((char *)df->data[j][old_row]);
-        else
-            new_df->data[j][new_row] = df->data[j][old_row];
+        if (df->column_types[j] == STRING) {
+            new_df->data[new_row][j] = strdup((char *)df->data[old_row][j]);
+        } else
+            new_df->data[new_row][j] = df->data[old_row][j];
     }
 }
 
@@ -45,9 +49,9 @@ static void copy_filtered_data(dataframe_t *new_df, dataframe_t *df,
     int new_row = 0;
 
     for (int i = 0; i < df->nb_columns; i++)
-        new_df->data[i] = malloc(sizeof(void *) * new_df->nb_rows);
+        new_df->data[i] = malloc(sizeof(void *) * new_df->nb_columns);
     for (int i = 0; i < df->nb_rows; i++) {
-        if (!filter_func(df->data[col_idx][i]))
+        if (filter_func(df->data[i][col_idx]) == 0)
             continue;
         copy_row(new_df, df, new_row, i);
         new_row++;
@@ -60,8 +64,8 @@ dataframe_t *df_filter(dataframe_t *df, const char *column,
     int col_idx;
     dataframe_t *new_df = malloc(sizeof(dataframe_t));
 
-    if (!df || !column || !filter_func || !new_df)
-        return NULL;
+    if (!new_df) return NULL;
+
     col_idx = get_column_index(df, column);
     if (col_idx == -1)
         return NULL;
@@ -69,22 +73,11 @@ dataframe_t *df_filter(dataframe_t *df, const char *column,
     new_df->nb_columns = df->nb_columns;
     new_df->column_names = df->column_names;
     new_df->column_types = df->column_types;
-    new_df->data = malloc(sizeof(void **) * new_df->nb_columns);
     new_df->separator = strdup(df->separator);
-    if (!new_df->data)
+    if (!new_df->separator) {
+        free(new_df);
         return NULL;
+    }
     copy_filtered_data(new_df, df, col_idx, filter_func);
     return new_df;
-}
-
-bool filter_func(void *value)
-{
-    return (*(int *)value > 30);
-}
-
-int main ( void ) {
-    dataframe_t *dataframe = df_read_csv("data.csv", NULL);
-    dataframe_t *filtered = df_filter ( dataframe , "age ", filter_func);
-    df_write_csv ( filtered , " filtered.csv") ;
-    return 0;
 }
