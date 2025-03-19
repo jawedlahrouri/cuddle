@@ -71,6 +71,4 @@ void **df_get_unique_values(dataframe_t *dataframe, const char *column);
 void df_describe(dataframe_t *dataframe);
 dataframe_t *df_apply(dataframe_t *dataframe,
     const char *column, void *(*apply_func)(void *value));
-dataframe_t *df_filter(dataframe_t *df, const char *column,
-    bool (*filter_func)(void *value));
 #endif
