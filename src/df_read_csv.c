@@ -133,61 +133,8 @@ char **read_column_names(FILE *file, char *separator, int *nb_columns)
     return name;
 }
 
-void *convert_value(char *value, column_type_t type)
-{
-    void *result = NULL;
-
-    switch (type) {
-        case INT: {
-            int *val = malloc(sizeof(int));
-            if (!val) return NULL;
-            *val = atoi(value);
-            result = val;
-            break;
-        }
-        case UINT: {
-            unsigned int *val = malloc(sizeof(unsigned int));
-            if (!val) return NULL;
-            *val = (unsigned int)strtoul(value, NULL, 10);
-            result = val;
-            break;
-        }
-        case FLOAT: {
-            float *val = malloc(sizeof(float));
-            if (!val) return NULL;
-            *val = strtof(value, NULL);
-            result = val;
-            break;
-        }
-        case BOOL: {
-            int *val = malloc(sizeof(int));
-            if (!val) return NULL;
-            *val = (strcmp(value, "true") == 0) ? 1 : 0;
-            result = val;
-            break;
-        }
-        case STRING:
-        default:
-            result = strdup(value);
-            break;
-    }
-    return result;
-}
-
-char ***read_raw_data(FILE *file, char *separator, int *nb_row)
-{
-    char line[1024];
-    char ***data = malloc(sizeof(char **) * 100);
-
-    while (fgets(line, sizeof(line), file)) {
-        line[strcspn(line, "\n")] = '\0';
-        data[*nb_row] = my_str_to_word_array(line, separator);
-        (*nb_row)++;
-    }
-    return data;
-}
-
-void ***convert_data(char ***raw_data, column_type_t *column_types, int nb_row, int nb_columns)
+void ***convert_data(char ***raw_data,
+    column_type_t *column_types, int nb_row, int nb_columns)
 {
     void ***data = malloc(sizeof(void **) * nb_row);
 
@@ -204,7 +151,8 @@ dataframe_t *df_read_csv(char *filename, char *separator)
 {
     dataframe_t *data_frame = malloc(sizeof(dataframe_t));
     FILE *file = fopen(filename, "r");
-    int nb_row = 0, nb_columns = 0;
+    int nb_row = 0;
+    int nb_columns = 0;
     char **name;
     char ***raw_data;
     void ***data;
@@ -218,11 +166,7 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     raw_data = read_raw_data(file, separator, &nb_row);
     types = define_type(nb_row, nb_columns, raw_data);
     data = convert_data(raw_data, types, nb_row, nb_columns);
-    data_frame->column_names = name;
-    data_frame->data = data;
-    data_frame->column_types = types;
-    data_frame->nb_columns = nb_columns;
-    data_frame->nb_rows = nb_row;
-    fclose(file);
-    return data_frame;
+    data_frame = fill_dataframe2(data_frame, name, data);
+    data_frame = fill_dataframe(data_frame, types, nb_columns, nb_row);
+    return return_data_frame;
 }

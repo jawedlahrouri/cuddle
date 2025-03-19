@@ -12,7 +12,6 @@ static int get_column_index(dataframe_t *df, const char *column)
     for (int i = 0; i < df->nb_columns; i++) {
         printf("%s index: %d\n", df->column_names[i], i);
         if (strcmp(df->column_names[i], column) == 0) {
-            //printf("%s index: %d\n", df->column_names[i], i);
             return i;
         }
     }
