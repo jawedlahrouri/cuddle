@@ -133,15 +133,16 @@ char **read_column_names(FILE *file, char *separator, int *nb_columns)
     return name;
 }
 
-void ***read_data(FILE *file, char *separator, int *nb_row)
+void ***convert_data(char ***raw_data,
+    column_type_t *column_types, int nb_row, int nb_columns)
 {
-    char line[1024];
-    void ***data = malloc(sizeof(void **) * 100);
+    void ***data = malloc(sizeof(void **) * nb_row);
 
-    while (fgets(line, sizeof(line), file)) {
-        line[strcspn(line, "\n")] = '\0';
-        data[*nb_row] = (void **)my_str_to_word_array(line, separator);
-        (*nb_row)++;
+    for (int i = 0; i < nb_row; i++) {
+        data[i] = malloc(sizeof(void *) * nb_columns);
+        for (int j = 0; j < nb_columns; j++) {
+            data[i][j] = convert_value(raw_data[i][j], column_types[j]);
+        }
     }
     return data;
 }
@@ -153,19 +154,19 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     int nb_row = 0;
     int nb_columns = 0;
     char **name;
+    char ***raw_data;
     void ***data;
+    column_type_t *types;
 
     separator = separator ? separator : ",";
     data_frame->separator = strdup(separator);
     if (!file || !data_frame)
         return NULL;
     name = read_column_names(file, separator, &nb_columns);
-    data = read_data(file, separator, &nb_row);
-    data_frame->column_names = name;
-    data_frame->data = data;
-    data_frame->column_types = define_type(nb_row, nb_columns, (char ***)data);
-    data_frame->nb_columns = nb_columns;
-    data_frame->nb_rows = nb_row;
-    fclose(file);
-    return data_frame;
+    raw_data = read_raw_data(file, separator, &nb_row);
+    types = define_type(nb_row, nb_columns, raw_data);
+    data = convert_data(raw_data, types, nb_row, nb_columns);
+    data_frame = fill_dataframe2(data_frame, name, data);
+    data_frame = fill_dataframe(data_frame, types, nb_columns, nb_row);
+    return return_data_frame(file, data_frame);
 }

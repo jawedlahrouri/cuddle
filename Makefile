@@ -31,7 +31,6 @@ SRC        =    ./src/df_read_csv.c \
             ./src/read_bis_type.c \
             ./src/read_return.c \
 
-
 OBJ		=	$(SRC:.c=.o)
 
 CFLAGS		=	-Wall -Wextra -I include
