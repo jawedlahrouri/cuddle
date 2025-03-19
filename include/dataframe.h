@@ -78,4 +78,5 @@ dataframe_t *fill_dataframe(dataframe_t *data_frame,
 dataframe_t *fill_dataframe2(dataframe_t *data_frame,
     char **name, void ***data);
 dataframe_t *return_data_frame(FILE *file, dataframe_t *data_frame);
+
 #endif
