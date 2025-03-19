@@ -18,16 +18,8 @@ void write_csv_header(FILE *file, dataframe_t *df)
     fprintf(file, "\n");
 }
 
-char *convert_to_string(void *value, column_type_t type)
+static char *write_string(void *value, char *str, column_type_t type)
 {
-    char *str = malloc(sizeof(char) * strlen((char *)value));
-
-    if (!str)
-        return NULL;
-    if (type == STRING || type == UNDEFINED)
-        return strdup((char *)value);
-    else if (type == BOOL)
-        return strdup(*(int *)value ? "true" : "false");
     switch (type) {
         case INT:
             sprintf(str, "%d", *(int *)value);
@@ -38,7 +30,23 @@ char *convert_to_string(void *value, column_type_t type)
         case FLOAT:
             sprintf(str, "%.2f", *(float *)value);
             break;
+        default:
+            break;
     }
+    return str;
+}
+
+char *convert_to_string(void *value, column_type_t type)
+{
+    char *str = malloc(sizeof(char) * strlen((char *)value));
+
+    if (!str)
+        return NULL;
+    if (type == STRING || type == UNDEFINED)
+        return strdup((char *)value);
+    else if (type == BOOL)
+        return strdup(*(int *)value ? "true" : "false");
+    str = write_string(value, str, type);
     return str;
 }
 
