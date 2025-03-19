@@ -43,8 +43,6 @@ void *convert_value(char *value, column_type_t type)
     switch (type) {
         case INT:
             val_int = malloc(sizeof(int));
-            if (!val_int)
-                return NULL;
             *val_int = atoi(value);
             return val_int;
         case UINT:

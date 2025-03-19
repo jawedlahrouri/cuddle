@@ -24,6 +24,10 @@ char *convert_to_string(void *value, column_type_t type)
 
     if (!str)
         return NULL;
+    if (type == STRING || type == UNDEFINED)
+        return strdup((char *)value);
+    else if (type == BOOL)
+        return strdup(*(int *)value ? "true" : "false");
     switch (type) {
         case INT:
             sprintf(str, "%d", *(int *)value);
@@ -34,12 +38,6 @@ char *convert_to_string(void *value, column_type_t type)
         case FLOAT:
             sprintf(str, "%.2f", *(float *)value);
             break;
-        case BOOL:
-            sprintf(str, "%s", (*(int *)value) ? "true" : "false");
-            break;
-        case STRING:
-        default:
-            return strdup((char *)value);
     }
     return str;
 }
@@ -47,15 +45,14 @@ char *convert_to_string(void *value, column_type_t type)
 void write_csv_rows(FILE *file, dataframe_t *df)
 {
     char *sep = df->separator;
-    char *value_str = NULL;
+    char *valstr = NULL;
 
     for (int i = 0; i < df->nb_rows; i++) {
         for (int j = 0; j < df->nb_columns; j++) {
-            value_str = convert_to_string(df->data[i][j], df->column_types[j]);
-            if (!value_str)
-                continue;
-            fprintf(file, "%s%s", value_str, (j < df->nb_columns - 1) ? sep : "");
-            free(value_str);
+            valstr = convert_to_string(df->data[i][j], df->column_types[j]);
+            fprintf(file, "%s", valstr ? valstr : "");
+            free(valstr);
+            fprintf(file, "%s", (j < df->nb_columns - 1) ? sep : "");
         }
         fprintf(file, "\n");
     }

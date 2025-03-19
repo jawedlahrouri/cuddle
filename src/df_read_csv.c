@@ -168,5 +168,5 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     data = convert_data(raw_data, types, nb_row, nb_columns);
     data_frame = fill_dataframe2(data_frame, name, data);
     data_frame = fill_dataframe(data_frame, types, nb_columns, nb_row);
-    return return_data_frame;
+    return return_data_frame(file, data_frame);
 }
