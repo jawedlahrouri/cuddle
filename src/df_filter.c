@@ -10,7 +10,6 @@
 static int get_column_index(dataframe_t *df, const char *column)
 {
     for (int i = 0; i < df->nb_columns; i++) {
-        printf("%s index: %d\n", df->column_names[i], i);
         if (strcmp(df->column_names[i], column) == 0) {
             return i;
         }
@@ -24,12 +23,9 @@ static int count_matching_rows(dataframe_t *df, int col_idx,
     int count = 0;
     int *value = 0;
 
-    printf("rows: %d, col: %d,\n", df->nb_columns, col_idx);
     for (int i = 0; i < df->nb_rows; i++) {
-        printf("iteration : %d\n", i);
         value = df->data[i][col_idx];
         if (filter_func(value) == 1){
-            printf("%s\n", (char *)df->data[i][col_idx]);
             count++;
         }
     }
@@ -74,7 +70,6 @@ dataframe_t *df_filter(dataframe_t *df, const char *column,
     if (col_idx == -1)
         return NULL;
     new_df->nb_rows = count_matching_rows(df, col_idx, filter_func);
-    printf("cb de row respecte la condition : %d\n", new_df->nb_rows);
     new_df->nb_columns = df->nb_columns;
     new_df->column_names = df->column_names;
     new_df->column_types = df->column_types;
