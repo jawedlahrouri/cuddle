@@ -18,17 +18,45 @@ void write_csv_header(FILE *file, dataframe_t *df)
     fprintf(file, "\n");
 }
 
+char *convert_to_string(void *value, column_type_t type)
+{
+    char *str = malloc(sizeof(char) * strlen((char *)value));
+
+    if (!str)
+        return NULL;
+    switch (type) {
+        case INT:
+            sprintf(str, "%d", *(int *)value);
+            break;
+        case UINT:
+            sprintf(str, "%u", *(unsigned int *)value);
+            break;
+        case FLOAT:
+            sprintf(str, "%.2f", *(float *)value);
+            break;
+        case BOOL:
+            sprintf(str, "%s", (*(int *)value) ? "true" : "false");
+            break;
+        case STRING:
+        default:
+            return strdup((char *)value);
+    }
+    return str;
+}
+
 void write_csv_rows(FILE *file, dataframe_t *df)
 {
-    char **line = NULL;
     char *sep = df->separator;
+    char *value_str = NULL;
 
     for (int i = 0; i < df->nb_rows; i++) {
-        line = (char **)df->data[i];
-        if (!line)
-            continue;
-        for (int j = 0; line[j] != NULL; j++)
-            fprintf(file, "%s%s", line[j], (line[j + 1] != NULL) ? sep : "");
+        for (int j = 0; j < df->nb_columns; j++) {
+            value_str = convert_to_string(df->data[i][j], df->column_types[j]);
+            if (!value_str)
+                continue;
+            fprintf(file, "%s%s", value_str, (j < df->nb_columns - 1) ? sep : "");
+            free(value_str);
+        }
         fprintf(file, "\n");
     }
 }
