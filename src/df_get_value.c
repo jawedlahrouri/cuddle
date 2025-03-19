@@ -50,7 +50,7 @@ void **df_get_values(dataframe_t *dataframe, const char *column)
         if (dataframe->data[i][col] == NULL)
             temps[i] = NULL;
         else
-            temps[i] = strdup((char *)dataframe->data[i][col]);
+            temps[i] = dataframe->data[i][col];
     }
     temps[dataframe->nb_rows] = NULL;
     return temps;
