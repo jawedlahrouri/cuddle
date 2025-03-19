@@ -5,6 +5,14 @@
 ## gcc lookalike
 ##
 
+# Couleurs
+RESET   = \033[0m
+BOLD    = \033[1m
+GREEN   = \033[32m
+BLUE    = \033[34m
+YELLOW  = \033[33m
+RED     = \033[31m
+
 NAME		=	libcuddle.a
 EXECUTABLE	=	cuddle
 
@@ -19,30 +27,64 @@ SRC		=	./src/df_read_csv.c \
 			./src/df_shape.c \
 			./src/df_get_value.c \
 			./lib/my/my_copy_word_in_array.c \
-			./src/df_filter.c \
-			./src/read_bis_type.c \
-			./src/read_return.c \
-			./main.c
+			./src/df_describe.c \
+			./src/df_apply.c
 
 OBJ		=	$(SRC:.c=.o)
 
 CFLAGS		=	-Wall -Wextra -I include
+DEBUGFLAGS	=	-g
 
 AR		=	ar rcs
 CC		=	gcc
 
-all: $(NAME)
+all: ascii_art $(NAME) ascii_mimiki
 
 $(NAME): $(OBJ)
+	@echo "$(YELLOW)🔨 Compilation en cours...$(RESET)"
 	$(AR) $(NAME) $(OBJ)
+	@echo "$(GREEN)✔ $(NAME) a été créé !$(RESET)"
 
 debug:
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(SRC)
+	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(EXECUTABLE) $(SRC)
 
 clean:
+	@echo "$(RED)🧹 Suppression des fichiers objets...$(RESET)"
 	rm -f $(OBJ)
 
 fclean: clean
+	@echo "$(RED)🗑 Suppression de $(NAME) et $(EXECUTABLE)...$(RESET)"
 	rm -f $(NAME) $(EXECUTABLE)
 
 re: fclean all
+
+ascii_art:
+	clear
+	@echo "$(BOLD)$(RED)"
+	@echo " ██████╗██╗   ██╗██████╗ ██████╗ ██╗     ███████╗"
+	@echo "██╔════╝██║   ██║██╔══██╗██╔══██╗██║     ██╔════╝"
+	@echo "██║     ██║   ██║██║  ██║██║  ██║██║     █████╗  "
+	@echo "██║     ██║   ██║██║  ██║██║  ██║██║     ██╔══╝  "
+	@echo "╚██████╗╚██████╔╝██████╔╝██████╔╝███████╗███████╗"
+	@echo " ╚═════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝"
+	@echo "      $(YELLOW)🚀 CUDDLE - EPITECH PROJECT 2025 🚀$(RESET)"
+	@echo "$(RESET)"
+
+ascii_mimiki:
+	@echo "$(GREEN)Compilation terminée avec succès ! ✅ $(RESET)"
+	@echo "$(BOLD)"
+	@echo " ⠀⠀⣠⡶⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+	@echo " ⠀⣰⣿⠃⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀"
+	@echo " ⢸⣿⣯⠀⠀⠀⠀⠀⠀⢠⣴⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀"
+	@echo " ⢼⣿⣿⣆⠀⢀⣀⣀⣴⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⠀"
+	@echo " ⢸⣿⣿⣿⣿⣿⣿⣿⠿⠿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+	@echo " ⠀⢻⣿⠋⠙⢿⣿⣿⡀⠀⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀"
+	@echo " ⠀⢸⠿⢆⣀⣼⣿⣿⣿⣿⡏⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀"
+	@echo " ⠀⠀⡀⣨⡙⠟⣩⣙⣡⣬⣴⣤⠏⠀⠀⠀⠀⠀⠀⣀⡀"
+	@echo " ⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⣀⣤⣾⣿⣿⡇"
+	@echo " ⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣇⠀⢸⣿⣿⠿⠿⠛⠃"
+	@echo " ⠀⠀⠀⠀⢠⣿⣿⢹⣿⢹⣿⣿⣿⢰⣿⠿⠃⠀⠀⠀⠀"
+	@echo " ⠀⢀⣀⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡛⠀⠀⠀⠀⠀⠀"
+	@echo " ⠀⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠛⠓⠀⠀⠀⠀⠀"
+	@echo " ⠀⠀⠀⠀⠀⠀⠀⠉⠀⠉⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+	@echo "$(RESET)"
