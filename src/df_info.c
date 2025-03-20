@@ -14,8 +14,8 @@
 
 void df_info(dataframe_t *dataframe)
 {
-    const char *type_names[] = {"BOOL", "INT",
-        "UINT", "FLOAT", "STRING", "UNDEFINED"};
+    const char *type_names[] = {"bool", "int",
+        "unsigned int", "float", "string", "undefined"};
 
     printf("%d columns:\n", dataframe->nb_columns);
     for (int i = 0; i < dataframe->nb_columns; i++){
