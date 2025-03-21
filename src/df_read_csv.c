@@ -147,6 +147,18 @@ void ***convert_data(char ***raw_data,
     return data;
 }
 
+void free_raw_data(char ***raw_data)
+{
+    if (!raw_data)
+        return;
+    for (int i = 0; raw_data[i]; i++) {
+        for (int j = 0; raw_data[i][j]; j++)
+            free(raw_data[i][j]);
+        free(raw_data[i]);
+    }
+    free(raw_data);
+}
+
 dataframe_t *df_read_csv(char *filename, char *separator)
 {
     dataframe_t *data_frame = malloc(sizeof(dataframe_t));
@@ -166,6 +178,7 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     raw_data = read_raw_data(file, separator, &nb_row);
     types = define_type(nb_row, nb_columns, raw_data);
     data = convert_data(raw_data, types, nb_row, nb_columns);
+    free_raw_data(raw_data);
     data_frame = fill_dataframe2(data_frame, name, data);
     data_frame = fill_dataframe(data_frame, types, nb_columns, nb_row);
     return return_data_frame(file, data_frame);

@@ -62,6 +62,9 @@ char ***read_raw_data(FILE *file, char *separator, int *nb_row)
     char line[1024];
     char ***data = malloc(sizeof(char **) * 100);
 
+    if (!data)
+        return NULL;
+    memset(data, 0, sizeof(char **) * 100);
     while (fgets(line, sizeof(line), file)) {
         line[strcspn(line, "\n")] = '\0';
         data[*nb_row] = my_str_to_word_array(line, separator);
