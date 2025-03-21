@@ -9,6 +9,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void loop_free(dataframe_t *data, int i)
+{
+    for (int j = 0; j < data->nb_columns; j++)
+        free(data->data[i][j]);
+}
+
 void df_free(dataframe_t *data)
 {
     if (!data)
@@ -22,8 +28,7 @@ void df_free(dataframe_t *data)
         free(data->column_types);
     if (data->data){
         for (int i = 0; i < data->nb_rows; i++) {
-            for (int j = 0; j < data->nb_columns; j++)
-                free(data->data[i][j]);
+            loop_free(data, i);
             free(data->data[i]);
         }
         free(data->data);
