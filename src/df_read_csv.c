@@ -64,7 +64,7 @@ static int check_type(char ***arg, int i, int nb_row)
     istype->is_float = 0;
     istype->is_uint = 0;
     for (int j = 0; j < nb_row; j++) {
-        num = is_num(arg, nb_row, i);
+        num = is_num(arg, i);
         if (is_it_bool(arg, nb_row, i) == 1)
             istype->is_bool++;
         else
@@ -153,10 +153,10 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     FILE *file = fopen(filename, "r");
     int nb_row = 0;
     int nb_columns = 0;
-    char **name;
-    char ***raw_data;
-    void ***data;
-    column_type_t *types;
+    char **name = NULL;
+    char ***raw_data = NULL;
+    void ***data = NULL;
+    column_type_t *types = NULL;
 
     separator = separator ? separator : ",";
     data_frame->separator = strdup(separator);

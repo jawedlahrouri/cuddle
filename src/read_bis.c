@@ -19,7 +19,8 @@ int is_negative(char *str)
 
 int is_valid_digit(char c)
 {
-    return (c >= '0' && c <= '9') || c == '.';
+    return (c >= '0' && c <= '9') ||
+        c == '.' || c == '-';
 }
 
 int count_points(char *str)
@@ -33,30 +34,30 @@ int count_points(char *str)
     return point;
 }
 
-int check_error(char ***arg, int i, int j, int *is_float)
+int check_error(char ***arg, int i, int j)
 {
     for (int a = 0; arg[j][i][a]; a++) {
         if (!is_valid_digit(arg[j][i][a]))
             return 0;
         if (arg[j][i][a] == '.')
-            *is_float = 1;
+            return 1;
     }
-    return 1;
+    return 2;
 }
 
-int is_num(char ***arg, int nb_row, int i)
+int is_num(char ***arg, int i)
 {
     int point = 0;
-    int is_float = 0;
+    int is_float = check_error(arg, i, 0);
 
-    for (int j = 0; j < nb_row; j++) {
-        if (is_negative(arg[j][i]))
-            return 2;
-        point = count_points(arg[j][i]);
-        if (point > 1)
-            return 84;
-        if (check_error(arg, i, j, &is_float) == 0)
-            return 0;
-    }
-    return is_float ? 3 : 1;
+    point = count_points(arg[0][i]);
+    if (point > 1)
+        return 84;
+    if (is_float == 0)
+        return 0;
+    if (is_float == 1)
+        return 3;
+    if (is_negative(arg[0][i]))
+        return 1;
+    return 2;
 }
