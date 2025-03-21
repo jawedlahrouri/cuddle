@@ -119,20 +119,6 @@ column_type_t *set_to_undefined(int nb_columns)
     return type;
 }
 
-char **read_column_names(FILE *file, char *separator, int *nb_columns)
-{
-    char line[1024];
-    char **name = NULL;
-
-    if (fgets(line, sizeof(line), file)) {
-        line[strcspn(line, "\n")] = '\0';
-        name = my_str_to_word_array(line, separator);
-        while (name[*nb_columns])
-            (*nb_columns)++;
-    }
-    return name;
-}
-
 void ***convert_data(char ***raw_data,
     column_type_t *column_types, int nb_row, int nb_columns)
 {
@@ -147,33 +133,16 @@ void ***convert_data(char ***raw_data,
     return data;
 }
 
-void free_raw_data(char ***raw_data)
+dataframe_t *set_dataframe(dataframe_t *data_frame,
+    FILE *file, char *separator)
 {
-    if (!raw_data)
-        return;
-    for (int i = 0; raw_data[i]; i++) {
-        for (int j = 0; raw_data[i][j]; j++)
-            free(raw_data[i][j]);
-        free(raw_data[i]);
-    }
-    free(raw_data);
-}
-
-dataframe_t *df_read_csv(char *filename, char *separator)
-{
-    dataframe_t *data_frame = malloc(sizeof(dataframe_t));
-    FILE *file = fopen(filename, "r");
-    int nb_row = 0;
-    int nb_columns = 0;
     char **name = NULL;
     char ***raw_data = NULL;
     void ***data = NULL;
+    int nb_row = 0;
+    int nb_columns = 0;
     column_type_t *types = NULL;
 
-    separator = separator ? separator : ",";
-    data_frame->separator = strdup(separator);
-    if (!file || !data_frame)
-        return NULL;
     name = read_column_names(file, separator, &nb_columns);
     raw_data = read_raw_data(file, separator, &nb_row);
     types = define_type(nb_row, nb_columns, raw_data);
@@ -181,5 +150,18 @@ dataframe_t *df_read_csv(char *filename, char *separator)
     free_raw_data(raw_data);
     data_frame = fill_dataframe2(data_frame, name, data);
     data_frame = fill_dataframe(data_frame, types, nb_columns, nb_row);
+    return data_frame;
+}
+
+dataframe_t *df_read_csv(char *filename, char *separator)
+{
+    dataframe_t *data_frame = malloc(sizeof(dataframe_t));
+    FILE *file = fopen(filename, "r");
+
+    separator = separator ? separator : ",";
+    data_frame->separator = strdup(separator);
+    if (!file || !data_frame)
+        return NULL;
+    data_frame = set_dataframe(data_frame, file, separator);
     return return_data_frame(file, data_frame);
 }

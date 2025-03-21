@@ -83,4 +83,6 @@ dataframe_t *df_filter(dataframe_t *df, const char *column,
 int get_column_index(dataframe_t *df, const char *column);
 dataframe_t *df_sort(dataframe_t *df, const char *column,
     bool (*sort_func)(void *, void *));
+char **read_column_names(FILE *file, char *separator, int *nb_columns);
+void free_raw_data(char ***raw_data);
 #endif

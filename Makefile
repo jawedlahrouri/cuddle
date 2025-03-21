@@ -32,6 +32,7 @@ SRC        =    ./src/df_read_csv.c \
 				./src/read_return.c \
 				./src/df_describe.c \
                 ./src/df_sort.c \
+				./src/read_set_dataframe.c \
 
 OBJ		=	$(SRC:.c=.o)
 
