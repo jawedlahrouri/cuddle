@@ -80,4 +80,7 @@ dataframe_t *fill_dataframe2(dataframe_t *data_frame,
 dataframe_t *return_data_frame(FILE *file, dataframe_t *data_frame);
 dataframe_t *df_filter(dataframe_t *df, const char *column,
     bool (*filter_func)(void *value));
+int get_column_index(dataframe_t *df, const char *column);
+dataframe_t *df_sort(dataframe_t *df, const char *column,
+    bool (*sort_func)(void *, void *));
 #endif

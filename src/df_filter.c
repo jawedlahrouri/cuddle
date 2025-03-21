@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int get_column_index(dataframe_t *df, const char *column)
+int get_column_index(dataframe_t *df, const char *column)
 {
     for (int i = 0; i < df->nb_columns; i++) {
         if (strcmp(df->column_names[i], column) == 0)
